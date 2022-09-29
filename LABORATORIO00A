@@ -1,0 +1,85 @@
+//Laboratorio clase 01 / FP2
+//Hecho por Misael Marron
+import java.util.*;
+import javax.swing.*;
+public class MutacionesADN2 {
+
+	public static void main(String [] args) {
+		Scanner scan=new Scanner(System.in);
+		//Pedimos que ingrese la cadena para luego agregarla a un arraylist
+		String ADN;
+		int verif;
+		
+		//Hacemos un bucle que verifique que las letras no sea ajenas a CGTA.
+		do {
+			ADN=JOptionPane.showInputDialog("Ingrese candena adn : ");
+			verif=0;
+				for (int i=0;i<ADN.length();i++) {
+					switch (ADN.charAt(i)) 
+					{
+					case 'C':  verif++;break;
+					case 'G':  verif++;break;
+					case 'T':  verif++;break;
+					case 'A':  verif++;break;
+					}
+			
+			     }
+			if (verif!=ADN.length())
+				System.out.println("Caracteres no permitidos .... Ingrese denuevo");	
+			
+		}while (verif<ADN.length());
+		
+		//Pedimos que ingrese la cantidad de mutaciones
+		System.out.print("Cantidad de mutaciones : ");
+		int a = scan.nextInt();
+		
+		//Enviamos al metodo mutaciones para las mutaciones
+		mutaciones(ADN,a);
+
+	}
+	public static void mutaciones(String ADN, int cant) {
+		Scanner scan=new Scanner(System.in);
+		ArrayList<Character> adn = new ArrayList<Character>();
+		for(int j = 0; j < ADN.length(); j++) //Colocar la cadena en el arrayList
+			adn.add(ADN.charAt(j));
+		for(int i = 0; i < cant; i++) {
+			System.out.print("\nIngrese mutacion "+(i+1)+" : ");
+			String mutaciones = scan.nextLine();
+			System.out.print("Ingresa el intervalo : ");
+			int ini = scan.nextInt();
+			int fin = scan.nextInt();
+			if(mutaciones.equals("amp")||mutaciones.equals("a m p"))
+				adn = amp(adn,ini,fin);
+			else if(mutaciones.equals("del")||mutaciones.equals("d e l"))
+				adn = del(adn,ini,fin);
+			else
+				adn = inv(adn,ini,fin);
+			imprim(adn);
+		}
+		
+	}
+	public static ArrayList<Character> amp (ArrayList<Character> adn, int ini, int fin){
+		for(int i = ini ; ini <= fin ; ini++, i+=2) 
+			adn.add(ini, adn.get(i));
+		return adn;	
+	}
+    public static ArrayList<Character> del (ArrayList<Character> adn, int ini, int fin){
+    	for(int i = ini ; ini <= fin ; ini++)
+			adn.remove(i);
+		return adn;	
+	}
+    public static ArrayList<Character> inv (ArrayList<Character> adn, int ini, int fin){
+    	Character aux;
+    	for(int i = ini, j = fin; ini <= fin; ini++, j--) {
+			aux = adn.remove(i);
+			adn.add(j, aux);
+		}
+		return adn;
+	}
+    public static void imprim(ArrayList<Character> adn) {
+    	//Imprimimos el resultado
+    	for(int i = 0; i < adn.size(); i++)
+    		System.out.print(adn.get(i));
+    	System.out.println();
+    }
+}
